@@ -2,7 +2,7 @@ angular.module('CustomerManagementApp').
     controller('ListCustomerController', ['$rootScope', '$routeParams', '$scope', '$location', '$localStorage', '$http', 'CustomerService',
         function($rootScope, $routeParams, $scope, $location, $localStorage, $http , CustomerService) {
         $scope.customers = [];
-        console.log("Inside Customer Controller");
+        console.log("Inside Customer list Controller");
         CustomerService.list(function(res) {
             console.log(res);
             $scope.customers = res;
@@ -12,7 +12,7 @@ angular.module('CustomerManagementApp').
 
         <!-- To show -->
         $scope.show = function(id) {
-            $location.url('/customer/'+id);
+            $location.url('/customers/'+id);
         };
 
         $scope.fields = ['firstName', 'middleName', 'lastName', 'email', 'dateOfBirth', 'accountNo', 'role'];
@@ -25,8 +25,17 @@ angular.module('CustomerManagementApp').
         $scope.sort.field = 'firstName';
         $scope.sort.order = false;
     }])
-    .controller('showCustomerController', ['$scope', '$location', 'CustomerService', function($scope, $location, CustomerService) {
-
+    .controller('showCustomerController', ['$scope', '$location','$routeParams', 'CustomerService', function($scope, $location, $routeParams, CustomerService) {
+        $scope.customer = {};
+        console.log("Inside Customer show Controller");
+        var customerId = $routeParams.customerId;
+        console.log("customerId :" +customerId);
+        CustomerService.get(customerId, function(res) {
+            console.log(res);
+            $scope.customer = res;
+        },function(error) {
+            console.log(error);
+        });
     }])
     .controller('CreateCustomerController', ['$scope', '$location', 'CustomerService', function($scope, $location, CustomerService) {
         $scope.customer = {

@@ -15,5 +15,4 @@ angular.module('CustomerManagementApp', ['ngRoute', 'ngResource', 'ngStorage', '
             });
 
         $locationProvider.html5Mode(true);
-
     });

@@ -10,7 +10,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-click='show(customer._id)' ng-repeat='customer in customers | filter: query | orderBy: sort.field : sort.order'>
+    <tr ng-click='show(customer.id)' ng-repeat='customer in customers | filter: query | orderBy: sort.field : sort.order'>
         <td ng-repeat='field in fields' >
             {{customer[field]}}
         </td>

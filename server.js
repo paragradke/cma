@@ -18,7 +18,7 @@ app.use(express.static('./public'))
         res.sendfile('public/main.html');
     })
     .get('/api/customers', customers.list)
-    .get('/api/customer/:id', customers.get)
+    .get('/api/customers/:id', customers.get)
     .post('/api/customers', customers.save)
     .delete('/api/customers/:id', customers.delete)
     .put('/api/customers/:id', customers.update)

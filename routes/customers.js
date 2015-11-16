@@ -19,7 +19,7 @@ exports.list = function(req, res) {
                     }
                     console.log(rows);
                     user['role'] = rows[0];
-                    connection.query('SELECT name FROM userProperties where user_id = ?',user.id ,function(err, rows) {
+                    connection.query('SELECT name FROM userProperties where userId = ?',user.id ,function(err, rows) {
                         if(err) {
                             console.log("Error Selecting : %s ", err);
                         }
@@ -40,6 +40,19 @@ exports.list = function(req, res) {
 
 exports.get = function(req, res) {
     console.log("get called" + req);
+    var id = req.params.id;
+    console.log(id);
+    req.getConnection(function(err, connection) {
+        connection.query('SELECT * FROM users where id = ?', id, function(err, rows) {
+            console.log(rows);
+            if(err) {
+                console.log("Error Selecting : %s ", err);
+            }
+
+            var user = rows[0];
+            res.json(user);
+        });
+    });
 };
 
 exports.update = function(req, res) {
@@ -90,6 +103,7 @@ exports.save = function(req, res) {
                     }
                     user['properties'] = user_properties;
                     console.log('Well done :-)!');
+                    console.log(user);
                     res.json(user);
                 });
             });

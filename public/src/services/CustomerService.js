@@ -12,27 +12,27 @@ angular.module('CustomerManagementApp')
             },
             save: function (customer, success, error) {
                 console.log("Customer Service");
-                $http.post(baseUrl + '/api/customers' + customer.id, customer)
+                $http.post(baseUrl + '/api/customers', customer)
                     .success(success)
                     .error(error);
             },
             delete: function (customer, success, error) {
                 console.log("Customer Service");
                 console.log(customer);
-                $http.delete(baseUrl + '/api/customer/'+ customer.id)
+                $http.delete(baseUrl + '/api/customers/'+ customer.id)
                     .success(success)
                     .error(error);
             },
             update: function (customer, success, error) {
                 console.log("Customer Service");
                 console.log(customer);
-                $http.put(baseUrl + '/api/customer/'+ customer.id, customer)
+                $http.put(baseUrl + '/api/customers/'+ customer.id, customer)
                     .success(success)
                     .error(error);
             },
-            get: function (customer, success, error) {
+            get: function (customerId, success, error) {
                 console.log("Customer Service");
-                $http.get(baseUrl + '/api/customer/'+ customer.id)
+                $http.get(baseUrl + '/api/customers/'+ customerId)
                     .success(success)
                     .error(error);
             }
