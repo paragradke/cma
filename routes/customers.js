@@ -12,7 +12,6 @@ exports.list = function(req, res) {
             console.log(rows);
             async.eachSeries(rows, function (row, callback) {
                 var user = row;
-                //callback(); // Alternatively: callback(new Error());
                 connection.query('SELECT name FROM roles where id = ?',user.roleId ,function(err, rows) {
                     if(err) {
                         console.log("Error Selecting : %s ", err);
@@ -55,22 +54,21 @@ exports.get = function(req, res) {
                     console.log("Error Selecting : %s ", err);
                 }
                 user['role'] = rows[0].name;
-                user_properties = [];
-                connection.query('SELECT name , value , type , status FROM userProperties where userId = ?', user.id, function(err, rows) {
+                user = processUserObject(user);
+
+                connection.query('SELECT name , value , type , status FROM userProperties where userId = ?', user.id[0], function(err, rows) {
                     if(err) {
                         console.log("Error Selecting : %s ", err);
                     }
                     properties = rows;
                     async.eachSeries(properties, function (property, callback) {
                         var user_property = {};
-                        user_property[property.name] = [property.value, property.type, property.status];
-                        user_properties.push(user_property);
+                        user[property.name] = [property.value, property.type, property.status];
                         callback();
                     }, function (err) {
                         if (err) {
                             throw err;
                         }
-                        user['properties'] = user_properties;
                         console.log('Well done :-)!');
                         console.log(user);
                         res.json(user);
@@ -79,6 +77,20 @@ exports.get = function(req, res) {
             });
         });
     });
+};
+
+processUserObject = function(user) {
+    var newUser = {};
+    Object.keys(user).forEach(function(key) {
+        var newValue = [];
+        newValue.push(user[key]);
+        newValue.push('');
+        newValue.push('commited');
+        newUser[key] = newValue;
+    });
+    console.log("new user");
+    console.log(newUser);
+    return newUser;
 };
 
 exports.update = function(req, res) {

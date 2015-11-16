@@ -9,10 +9,10 @@
 
 
     <form-field ng-repeat="(k, v) in customer | keyFilter: 'firstName' | keyFilter: 'middleName' | keyFilter:'lastName' | keyFilter: 'role' | keyFilter: 'email' |
-     keyFilter: 'id' | keyFilter: 'guid' | keyFilter: 'roleId' | keyFilter: 'accountNo' " record="customer" field="{{k}}"></form-field>
+     keyFilter: 'id' | keyFilter: 'guid' | keyFilter: 'roleId' | keyFilter: 'accountNo' | keyFilter: 'properties' " record="customer" field="{{k}}"></form-field>
+
 
     <new-field record="customer" live="false"></new-field>
-
 
     <div class="row form-group">
         <div class="col-sm-offset-2">
