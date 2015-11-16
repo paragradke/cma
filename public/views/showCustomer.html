@@ -1,0 +1,17 @@
+<h2>Update Customer Record</h2>
+<form name="newCustomer" novalidate class="form-horizontal">
+    <form-field record="customer" field="firstName" live="false" required="true"></form-field>
+    <form-field record="customer" field="lastName" live="false" required="true"></form-field>
+
+
+    <form-field ng-repeat="(k, v) in customer | keyFilter: 'firstName' | keyFilter: 'lastName' | keyFilter:'userId' " record="customer" field="{{k}}"></form-field>
+
+    <new-field record="customer" live="false"></new-field>
+
+
+    <div class="row form-group">
+        <div class="col-sm-offset-2">
+            <button class="btn btn-primary" ng-click="save()">Create</button>
+        </div>
+    </div>
+</form>
