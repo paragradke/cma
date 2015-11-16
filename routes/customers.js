@@ -50,14 +50,13 @@ exports.get = function(req, res) {
             }
             var user = rows[0];
 
-            connection.query('SELECT name FROM roles where userId = ?', id, function(err, rows) {
+            connection.query('SELECT name FROM roles where id = ?', user.roleId, function(err, rows) {
                 if(err) {
                     console.log("Error Selecting : %s ", err);
                 }
                 user['role'] = rows[0].name;
+                res.json(user);
             });
-
-            res.json(user);
         });
     });
 };
