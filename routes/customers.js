@@ -18,8 +18,8 @@ exports.list = function(req, res) {
                         console.log("Error Selecting : %s ", err);
                     }
                     console.log(rows);
-                    user['role'] = rows[0];
-                    connection.query('SELECT name FROM userProperties where userId = ?',user.id ,function(err, rows) {
+                    user['role'] = rows[0].name;
+                    connection.query('SELECT * FROM userProperties where userId = ?',user.id ,function(err, rows) {
                         if(err) {
                             console.log("Error Selecting : %s ", err);
                         }
@@ -48,8 +48,15 @@ exports.get = function(req, res) {
             if(err) {
                 console.log("Error Selecting : %s ", err);
             }
-
             var user = rows[0];
+
+            connection.query('SELECT name FROM roles where userId = ?', id, function(err, rows) {
+                if(err) {
+                    console.log("Error Selecting : %s ", err);
+                }
+                user['role'] = rows[0].name;
+            });
+
             res.json(user);
         });
     });
