@@ -55,7 +55,27 @@ exports.get = function(req, res) {
                     console.log("Error Selecting : %s ", err);
                 }
                 user['role'] = rows[0].name;
-                res.json(user);
+                user_properties = [];
+                connection.query('SELECT name , value , type , status FROM userProperties where userId = ?', user.id, function(err, rows) {
+                    if(err) {
+                        console.log("Error Selecting : %s ", err);
+                    }
+                    properties = rows;
+                    async.eachSeries(properties, function (property, callback) {
+                        var user_property = {};
+                        user_property[property.name] = [property.value, property.type, property.status];
+                        user_properties.push(user_property);
+                        callback();
+                    }, function (err) {
+                        if (err) {
+                            throw err;
+                        }
+                        user['properties'] = user_properties;
+                        console.log('Well done :-)!');
+                        console.log(user);
+                        res.json(user);
+                    });
+                });
             });
         });
     });
