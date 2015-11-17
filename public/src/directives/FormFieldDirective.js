@@ -118,6 +118,7 @@ angular.module('CustomerManagementApp').
                                 console.log("property added");
                                 console.log(updatedRecord);
                                 scope.record[$filter('camelCase')(scope.field.name)] = [scope.field.value, scope.field.type, scope.field.status];
+                                scope.remove();
                             }, function () {
                                 alert("Failed to save field")
                             });
