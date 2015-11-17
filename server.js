@@ -2,6 +2,7 @@ var express = require('express');
 app = express();
 var connection  = require('express-myconnection');
 var mysql = require('mysql');
+var bodyParser = require('body-parser');
 var customers = require('./routes/customers');
 app.use(
     connection(mysql,{
@@ -12,6 +13,11 @@ app.use(
         database:'remitr'
     },'single')
 );
+//Handles post requests
+var jsonParser = bodyParser.json();
+
+//Handles put requests
+//app.use(express.methodOverride());
 
 app.use(express.static('./public'))
 .get('/', function(req, res) {
@@ -22,4 +28,5 @@ app.use(express.static('./public'))
     .post('/api/customers', customers.save)
     .delete('/api/customers/:id', customers.delete)
     .put('/api/customers/:id', customers.update)
+    .post('/api/addproperty/customers/:id', jsonParser, customers.addproperty)
     .listen(3000);

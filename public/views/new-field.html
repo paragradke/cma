@@ -6,6 +6,14 @@
         <div class="col-sm-6">
             <input type={{field.type}} name="fieldName" class="form-control" required ng-model="field.value" placeholder="value">
         </div>
+        <div class="btn-group col-sm-2 dropup">
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                Status <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li ng-repeat="(k,v) in status"><a ng-click="showStatus(k)">{{v[0]}}</a></li>
+            </ul>
+        </div>
         <div class="col-sm-4">
             <button class="btn btn-primary" ng-click="add()">Add</button>
             <button class="btn btn-primary" ng-click="remove()">Remove</button>

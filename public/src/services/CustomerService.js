@@ -30,6 +30,12 @@ angular.module('CustomerManagementApp')
                     .success(success)
                     .error(error);
             },
+            addProperty: function (customerId, newProperty, success, error) {
+                console.log("Customer Service addProperty");
+                $http.post(baseUrl + '/api/addproperty/customers/'+ customerId, newProperty)
+                    .success(success)
+                    .error(error);
+            },
             get: function (customerId, success, error) {
                 console.log("Customer Service");
                 $http.get(baseUrl + '/api/customers/'+ customerId)

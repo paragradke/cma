@@ -79,6 +79,21 @@ exports.get = function(req, res) {
     });
 };
 
+getPropertyFromRequest = function(input) {
+    var property = {};
+    var value = [];
+    var propertyName ;
+    Object.keys(input).forEach(function(key) {
+        propertyName = key;
+        value = input[key];
+    });
+    property['name'] = propertyName;
+    property['value'] = value[0];
+    property['type'] = value[1];
+    property['status'] = value[2];
+    return property;
+};
+
 processUserObject = function(user) {
     var newUser = {};
     Object.keys(user).forEach(function(key) {
@@ -99,6 +114,29 @@ exports.update = function(req, res) {
 
 exports.delete = function(req, res) {
     console.log("delete called" + req);
+};
+
+exports.addproperty = function(req, res) {
+    console.log("add property called");
+    console.log(req.body);
+    var input = JSON.parse(JSON.stringify(req.body));
+    var property = getPropertyFromRequest(input);
+    property['userId'] = req.params.id;
+    console.log(property);
+
+    req.getConnection(function (err, connection) {
+        var query = connection.query("INSERT INTO userProperties set ? ", property, function (err, rows) {
+            if (err) {
+                console.log("Error Selecting : %s ", err);
+            }
+
+            res.json(rows[0]);
+        });
+    });
+};
+
+exports.removeproperty = function(req, res) {
+    console.log("remove property called" + req);
 };
 
 exports.save = function(req, res) {

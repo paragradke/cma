@@ -12,7 +12,13 @@ angular.module('CustomerManagementApp').
         tel : ['Phone Number' , 'should be a phone number'],
         color : ['Color' , 'should be a color']
     }).
-    directive('formField',['$timeout', 'FieldTypes', 'CustomerService' , function($timeout, FieldTypes, CustomerService) {
+    value('FieldStatus', {
+        draft : ['Draft' , 'current status is draft'],
+        submitted : ['Submitted' , 'current status is submitted'],
+        verified : ['Verified' , 'current status is verified'],
+        onHold : ['onHold' , 'current status is onHold']
+    }).
+    directive('formField',['$timeout', 'FieldTypes', 'CustomerService' , function($timeout, FieldTypes ,CustomerService) {
         return {
             restrict : 'EA',
             templateUrl : 'views/form-field.html',
@@ -31,6 +37,8 @@ angular.module('CustomerManagementApp').
                 });
 
                 scope.types = FieldTypes;
+
+                console.log(scope.status);
 
                 scope.remove = function(field) {
                     delete scope.record[field];
@@ -55,7 +63,7 @@ angular.module('CustomerManagementApp').
                 }
             }
         }
-    }]).directive('newField',['$filter', 'FieldTypes', 'CustomerService' , function($filter, FieldTypes, CustomerService) {
+    }]).directive('newField',['$filter', 'FieldTypes', 'FieldStatus', 'CustomerService' , function($filter, FieldTypes, FieldStatus, CustomerService) {
         return {
             restrict : 'EA',
             templateUrl : 'views/new-field.html',
@@ -65,14 +73,21 @@ angular.module('CustomerManagementApp').
                 live : '@'
             },
             require : '^form',
-            link : function(scope, element, attrs, form, CustomerService) {
+            link : function(scope, element, attrs, form) {
 
                 scope.types = FieldTypes;
+                scope.status = FieldStatus;
                 scope.field = {};
 
                 scope.show = function(type) {
                     console.log("inside scope show");
                     scope.field.type = type;
+                    scope.display = true;
+                };
+
+                scope.showStatus = function(status) {
+                    console.log("inside scope showStatus :" + status);
+                    scope.field.status = status;
                     scope.display = true;
                 };
 
@@ -82,15 +97,23 @@ angular.module('CustomerManagementApp').
                 };
 
                 scope.add = function() {
+                    console.log("add property called");
                     if (form.newField.$valid) {
-                        scope.record[$filter('camelCase')(scope.field.name)] = [scope.field.value, scope.field.type];
-                        scope.remove();
+                        console.log("add property field is valid");
+                        var newProperty = {};
+                        console.log(scope.record);
+                        newProperty[$filter('camelCase')(scope.field.name)] = [scope.field.value, scope.field.type, scope.field.status];
+                        //scope.remove();
+                        console.log(newProperty);
                         if (scope.live !== 'false') {
                             //TODO implement and call update API
-                            CustomerService.update(scope.record, function(updatedRecord) {
-                                scope.record = updatedRecord;
+                            CustomerService.addProperty(scope.record.id[0], newProperty, function(updatedRecord) {
+                                //scope.record = updatedRecord;
+                                console.log("property added");
+                                console.log(updatedRecord);
+                                scope.record[(updatedRecord.name)] = [updatedRecord.value, updatedRecord.type, updatedRecord.status];
                             }, function () {
-                                //for error
+                                console.log("Failed to save record")
                             });
                         }
                     }
