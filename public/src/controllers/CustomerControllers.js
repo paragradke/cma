@@ -54,16 +54,17 @@ angular.module('CustomerManagementApp').
 
         $scope.save = function() {
             console.log("inside customer create service");
-            if ($scope.newCustomer.$invalid) {
+            if ($scope.customer.$invalid) {
                 $scope.$broadcast('record:invalid');
             } else {
                 CustomerService.save($scope.customer, function(data) {
                     console.log(data);
-                    $scope.customer = data;
+                    //$scope.customer = data;
+                    $location.url('/');
                 }, function(error){
                     //for error
                 });
-                $location.url('/customers');
+                //$location.url('/customers');
             }
         };
         

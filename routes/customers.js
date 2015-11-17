@@ -212,19 +212,25 @@ exports.removeproperty = function(req, res) {
     });
 };
 
+getOptionalProperties = function(user) {
+    var properties = [];
+
+};
+
 exports.save = function(req, res) {
     console.log("save called" + req);
+    console.log(req.body);
     var input = JSON.parse(JSON.stringify(req.body));
     req.getConnection(function (err, connection) {
-        var query = connection.query("select id from roles where name = ? ", input.role, function (err, rows) {
-            var roleId = rows[0];
+        var query = connection.query("select id from roles where name = ? ", input.role[0], function (err, rows) {
+            var roleId = rows[0].id;
             var data = {
-                first_name: input.first_name,
-                middle_name: input.middle_name,
-                last_name: input.last_name,
-                email: input.email,
-                date_of_birth: input.date_of_birth,
-                account_no: input.account_no,
+                firstName: input.firstName[0],
+                middleName: input.middleName[0],
+                lastName: input.lastName[0],
+                email: input.email[0],
+                dateOfBirth: input.dateOfBirth[0],
+                accountNo: input.accountNo[0],
                 roleId : roleId,
                 guid: uuid.v4()
             };
@@ -233,6 +239,7 @@ exports.save = function(req, res) {
                     console.log("Error inserting : %s ", err);
                 }
                 var user = rows[0];
+                /*
                 var properties = input.properties;
                 var user_properties = [];
                 async.eachSeries(properties, function (property, callback) {
@@ -255,6 +262,8 @@ exports.save = function(req, res) {
                     console.log(user);
                     res.json(user);
                 });
+                */
+                res.json(user);
             });
         });
     });
