@@ -6,10 +6,11 @@
     <form-field record="customer" field="email" live="false" required="true"></form-field>
     <form-field record="customer" field="accountNo" live="false" required="true"></form-field>
     <form-field record="customer" field="role" live="false" required="true"></form-field>
+    <form-field record="customer" field="dateOfBirth" live="false" required="true"></form-field>
 
 
     <form-field ng-repeat="(k, v) in customer | keyFilter: 'firstName' | keyFilter: 'middleName' | keyFilter:'lastName' | keyFilter: 'role' | keyFilter: 'email' |
-     keyFilter: 'id' | keyFilter: 'guid' | keyFilter: 'roleId' | keyFilter: 'accountNo' | keyFilter: 'properties' " record="customer" required="false" field="{{k}}"></form-field>
+     keyFilter: 'id' | keyFilter: 'guid' | keyFilter: 'roleId' | keyFilter: 'accountNo' | keyFilter: 'properties' | keyFilter: 'dateOfBirth' " record="customer" required="false" field="{{k}}"></form-field>
 
 
     <new-field record="customer" live="true"></new-field>
