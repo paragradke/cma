@@ -135,17 +135,30 @@ exports.addproperty = function(req, res) {
     });
 };
 
+getPropertyFromRemoveRequest = function(input) {
+    var propertyToRemove = {};
+    var propertyName ;
+    var value = [];
+    Object.keys(input).forEach(function(key) {
+        propertyName = key;
+        value = input[key];
+    });
+    propertyToRemove['name'] = propertyName;
+    propertyToRemove['value'] = value[0];
+    return propertyToRemove;
+};
+
 exports.removeproperty = function(req, res) {
     console.log("remove property called");
     var input = JSON.parse(JSON.stringify(req.body));
-    var property = getPropertyFromRequest(input);
+    var property = getPropertyFromRemoveRequest(input);
     property['userId'] = req.params.id;
     console.log(property);
 
     req.getConnection(function (err, connection) {
-        var query = connection.query("DELETE from userProperties set ? ", property, function (err, rows) {
+        var query = connection.query("DELETE from userProperties where name=? and value=? and userId=? ", [property['name'], property['value'], property['userId']], function (err, rows) {
             if (err) {
-                console.log("Error Selecting : %s ", err);
+                console.log("Error deleting : %s ", err);
             }
 
             res.json(rows[0]);

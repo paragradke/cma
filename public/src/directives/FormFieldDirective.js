@@ -18,7 +18,7 @@ angular.module('CustomerManagementApp').
         verified : ['Verified' , 'current status is verified'],
         onHold : ['onHold' , 'current status is onHold']
     }).
-    directive('formField',['$timeout', 'FieldTypes', 'CustomerService' , function($timeout, FieldTypes ,CustomerService) {
+    directive('formField',['$timeout','$filter', 'FieldTypes', 'CustomerService' , function($timeout, $filter, FieldTypes ,CustomerService) {
         return {
             restrict : 'EA',
             templateUrl : 'views/form-field.html',
@@ -38,25 +38,28 @@ angular.module('CustomerManagementApp').
 
                 scope.types = FieldTypes;
 
-                console.log(scope.status);
-
                 scope.remove = function(field) {
-                    scope.blurUpdate();
-                    delete scope.record[field];
-                };
-
-                scope.blurUpdate = function() {
+                    console.log("inside remove")
+                    console.log(field);
+                    //scope.blurUpdate();
                     var propertyToDelete = {};
                     if (scope.live !== 'false' && typeof scope.record !== undefined) {
-                        propertyToDelete[$filter('camelCase')(scope.field.name)] = [scope.field.value, scope.field.type, scope.field.status];
+                        propertyToDelete[field] = scope.record[field];
                         //TODO implement and call update API
-                        CustomerService.removeProperty(scope.record, function(deletedRecord) {
-                            delete scope.customer[deletedRecord.name];
+                        CustomerService.removeProperty(scope.record.id[0], propertyToDelete, function(deletedRecord) {
+                            console.log(deletedRecord);
+                            delete scope.record[field];
+                            scope.blurUpdate();
                         }, function () {
                             //for error
                             alert("Failed to delete field")
                         });
                     }
+                    //delete scope.record[field];
+                };
+
+                scope.blurUpdate = function() {
+
                 };
                 var saveTimeOut;
 
@@ -114,7 +117,7 @@ angular.module('CustomerManagementApp').
                                 //scope.record = updatedRecord;
                                 console.log("property added");
                                 console.log(updatedRecord);
-                                scope.record[(updatedRecord.name)] = [updatedRecord.value, updatedRecord.type, updatedRecord.status];
+                                scope.record[$filter('camelCase')(scope.field.name)] = [scope.field.value, scope.field.type, scope.field.status];
                             }, function () {
                                 alert("Failed to save field")
                             });
