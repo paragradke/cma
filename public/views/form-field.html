@@ -1,5 +1,5 @@
 <div class="row form-group" ng-form="{{ field }}" ng-class=" { 'has-error' : {{field}}.$dirty && {{field}}.$invalid }">
-    <label class="col-sm-2 control-label" >{{ field | labelCase }} <span ng-if="required">*</span></label>
+    <label class="col-sm-2 control-label" >{{ field | labelCase }} <span ng-if="required == 'true'">*</span></label>
     <div class="col-sm-6" ng-switch="required">
         <input ng-switch-when="true" ng-model="record[field][0]" type="{{record[field][1]}}" class="form-control"
                required ng-change="update()" ng-blur="blurUpdate()" />
@@ -10,6 +10,16 @@
             <span class="input-group-btn">
                 <button class="btn btn-default" ng-click="remove(field)"><span class="glyphicon glyphicon-remove-circle"></span></button>
             </span>
+        </div>
+    </div>
+    <div ng-if="required == 'false' " class="dropdown">
+        <div class="btn-group col-sm-2 dropup">
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                {{record[field][2]}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li ng-repeat="(k,v) in status"><a ng-click="showStatus(field, k)">{{v[0]}}</a></li>
+            </ul>
         </div>
     </div>
 

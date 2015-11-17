@@ -18,7 +18,7 @@ angular.module('CustomerManagementApp').
         verified : ['Verified' , 'current status is verified'],
         onHold : ['onHold' , 'current status is onHold']
     }).
-    directive('formField',['$timeout','$filter', 'FieldTypes', 'CustomerService' , function($timeout, $filter, FieldTypes ,CustomerService) {
+    directive('formField',['$timeout','$filter', 'FieldTypes', 'FieldStatus', 'CustomerService' , function($timeout, $filter, FieldTypes , FieldStatus ,CustomerService) {
         return {
             restrict : 'EA',
             templateUrl : 'views/form-field.html',
@@ -37,6 +37,14 @@ angular.module('CustomerManagementApp').
                 });
 
                 scope.types = FieldTypes;
+                scope.status = FieldStatus;
+
+                scope.showStatus = function(field, status) {
+                    console.log("inside scope showStatus :" + status);
+                    console.log("field showStatus :" + field);
+                    scope.record[field][2] = status;
+                    scope.display = true;
+                };
 
                 scope.remove = function(field) {
                     console.log("inside remove")
