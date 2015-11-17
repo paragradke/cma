@@ -129,6 +129,8 @@ exports.addproperty = function(req, res) {
             if (err) {
                 console.log("Error Selecting : %s ", err);
             }
+            console.log(rows);
+            makeAuditEntry(property['name'], property['status'], connection);
 
             res.json(rows[0]);
         });
@@ -148,6 +150,22 @@ getPropertyFromRemoveRequest = function(input) {
     return propertyToRemove;
 };
 
+makeAuditEntry = function(propertyName, currentStatus, connection) {
+    connection.query('SELECT id FROM userProperties where name = ?', propertyName, function(err, rows) {
+        if (err) {
+            console.log("Error Selecting : %s ", err);
+        }
+        var id = rows[0].id;
+
+        connection.query("INSERT INTO userPropertyAudits (userPropertyId, currentStatus) values( ? , ?) ",
+        [id, currentStatus], function (err, rows) {
+            if (err) {
+                console.log("Error Selecting : %s ", err);
+            }
+        });
+    });
+};
+
 exports.updatepropertystatus = function(req, res) {
     console.log("update property called");
 
@@ -159,6 +177,7 @@ exports.updatepropertystatus = function(req, res) {
             if (err) {
                 console.log("Error updating status : %s ", err);
             }
+            makeAuditEntry(rows[0].id, rows[0].status, connection);
 
             res.json(rows[0]);
         });
@@ -212,11 +231,6 @@ exports.removeproperty = function(req, res) {
     });
 };
 
-getOptionalProperties = function(user) {
-    var properties = [];
-
-};
-
 exports.save = function(req, res) {
     console.log("save called" + req);
     console.log(req.body);
@@ -239,30 +253,6 @@ exports.save = function(req, res) {
                     console.log("Error inserting : %s ", err);
                 }
                 var user = rows[0];
-                /*
-                var properties = input.properties;
-                var user_properties = [];
-                async.eachSeries(properties, function (property, callback) {
-                    property['userId'] = rows[0].id;
-                    connection.query('INSERT INTO userProperties set ', property, function (err, rows) {
-                        if (err) {
-                            console.log("Error Selecting : %s ", err);
-                            callback(new Error());
-                        }
-                        user_properties.push(rows[0]);
-                        console.log(rows);
-                        callback();
-                    });
-                }, function (err) {
-                    if (err) {
-                        throw err;
-                    }
-                    user['properties'] = user_properties;
-                    console.log('Well done :-)!');
-                    console.log(user);
-                    res.json(user);
-                });
-                */
                 res.json(user);
             });
         });
