@@ -31,4 +31,5 @@ app.use(express.static('./public'))
     .post('/api/addproperty/customers/:id', jsonParser, customers.addproperty)
     .post('/api/removeproperty/customers/:id', jsonParser, customers.removeproperty)
     .post('/api/updateproperty/customers/:id', jsonParser, customers.updateproperty)
+    .post('/api/updatepropertystatus/customers/:id', jsonParser, customers.updatepropertystatus)
     .listen(3000);

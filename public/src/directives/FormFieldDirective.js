@@ -39,11 +39,19 @@ angular.module('CustomerManagementApp').
                 scope.types = FieldTypes;
                 scope.status = FieldStatus;
 
-                scope.showStatus = function(field, status) {
+                scope.updateStatus = function(field, status) {
                     console.log("inside scope showStatus :" + status);
                     console.log("field showStatus :" + field);
-                    scope.record[field][2] = status;
-                    scope.display = true;
+                    if (scope.live !== 'false' && typeof scope.record !== undefined) {
+                        CustomerService.updateStatus(scope.record.id[0], field, status, function(deletedRecord) {
+                            console.log(deletedRecord);
+                            scope.record[field][2] = status;
+                            scope.display = true;
+                        }, function () {
+                            //for error
+                            alert("Failed to delete field")
+                        });
+                    }
                 };
 
                 scope.remove = function(field) {
