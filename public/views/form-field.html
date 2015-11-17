@@ -2,11 +2,11 @@
     <label class="col-sm-2 control-label" >{{ field | labelCase }} <span ng-if="required == 'true'">*</span></label>
     <div class="col-sm-6" ng-switch="required">
         <input ng-switch-when="true" ng-model="record[field][0]" type="{{record[field][1]}}" class="form-control"
-               required ng-change="update()" ng-blur="blurUpdate()" />
+               required ng-model-options="{ updateOn: 'blur' }" ng-change="update(field, required)" />
 
         <div class="input-group" ng-switch-default>
-            <input ng-model="record[field][0]" type="{{record[field][1]}}" class="form-control"
-                    ng-change="update()" ng-blur="blurUpdate()" />
+            <input ng-model="record[field][0]" type="{{record[field][1]}}" class="form-control" ng-model-options="{ updateOn: 'blur' }"
+                    ng-change="update(field, required)" ng-blur="blurUpdate()" />
             <span class="input-group-btn">
                 <button class="btn btn-default" ng-click="remove(field)"><span class="glyphicon glyphicon-remove-circle"></span></button>
             </span>

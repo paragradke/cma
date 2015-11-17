@@ -148,6 +148,35 @@ getPropertyFromRemoveRequest = function(input) {
     return propertyToRemove;
 };
 
+exports.updateproperty = function(req, res) {
+    console.log("update property called");
+    var input = JSON.parse(JSON.stringify(req.body));
+    var property = getPropertyFromRemoveRequest(input);
+    property['userId'] = req.params.id;
+    var required = req.query.required;
+    console.log(property);
+
+    req.getConnection(function (err, connection) {
+        if (required) {
+            var query = connection.query("UPDATE users set "+property['name']+" =? where id=? ", [ property['value'], property['userId']], function (err, rows) {
+                if (err) {
+                    console.log("Error updating : %s ", err);
+                }
+
+                res.json(rows[0]);
+            });
+        } else {
+            var query = connection.query("UPDATE userProperties set value = ? where name=?  and userId=? ", [ property['value'], property['name'], property['userId']], function (err, rows) {
+                if (err) {
+                    console.log("Error updating : %s ", err);
+                }
+
+                res.json(rows[0]);
+            });
+        }
+    });
+};
+
 exports.removeproperty = function(req, res) {
     console.log("remove property called");
     var input = JSON.parse(JSON.stringify(req.body));

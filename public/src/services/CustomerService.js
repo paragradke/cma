@@ -42,6 +42,12 @@ angular.module('CustomerManagementApp')
                     .success(success)
                     .error(error);
             },
+            updateProperty: function (customerId, propertyToUpdate, required, success, error) {
+                console.log("Customer Service addProperty");
+                $http.post(baseUrl + '/api/updateproperty/customers/'+ customerId+'?required='+required, propertyToUpdate)
+                    .success(success)
+                    .error(error);
+            },
             get: function (customerId, success, error) {
                 console.log("Customer Service");
                 $http.get(baseUrl + '/api/customers/'+ customerId)

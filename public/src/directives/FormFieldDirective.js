@@ -67,11 +67,26 @@ angular.module('CustomerManagementApp').
                 };
 
                 scope.blurUpdate = function() {
-
+                    console.log("field blur updated called");
                 };
                 var saveTimeOut;
 
-                scope.update = function() {
+                scope.update = function(field, required) {
+                    console.log("field updated called" + field);
+                    console.log("scope.live" + scope.live);
+                    console.log("scope.record" + scope.record);
+
+                    console.log("required :" + required);
+                    var propertyToUpdate = {};
+                    if (scope.live !== 'false' && typeof scope.record !== undefined) {
+                        propertyToUpdate[field] = scope.record[field];
+                        CustomerService.updateProperty(scope.record.id[0], propertyToUpdate, required, function(updatedRecord) {
+                            console.log(updatedRecord);
+                        }, function () {
+                            //for error
+                            alert("Failed to update field")
+                        });
+                    }
                     $timeout.cancel(saveTimeOut);
                     saveTimeOut = $timeout(scope.blurUpdate, 1000);
                 }

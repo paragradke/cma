@@ -1,12 +1,12 @@
 <h2>Update Customer Record</h2>
 <form name="showCustomer" novalidate class="form-horizontal">
-    <form-field record="customer" field="firstName" live="false" required="true"></form-field>
-    <form-field record="customer" field="middleName" live="false" required="true"></form-field>
-    <form-field record="customer" field="lastName" live="false" required="true"></form-field>
-    <form-field record="customer" field="email" live="false" required="true"></form-field>
-    <form-field record="customer" field="accountNo" live="false" required="true"></form-field>
-    <form-field record="customer" field="role" live="false" required="true"></form-field>
-    <form-field record="customer" field="dateOfBirth" live="false" required="true"></form-field>
+    <form-field record="customer" field="firstName" live="true" required="true"></form-field>
+    <form-field record="customer" field="middleName" live="true" required="true"></form-field>
+    <form-field record="customer" field="lastName" live="true" required="true"></form-field>
+    <form-field record="customer" field="email" live="true" required="true"></form-field>
+    <form-field record="customer" field="accountNo" live="true" required="true"></form-field>
+    <form-field record="customer" field="role" live="true" required="true"></form-field>
+    <form-field record="customer" field="dateOfBirth" live="true" required="true"></form-field>
 
 
     <form-field ng-repeat="(k, v) in customer | keyFilter: 'firstName' | keyFilter: 'middleName' | keyFilter:'lastName' | keyFilter: 'role' | keyFilter: 'email' |
