@@ -29,4 +29,5 @@ app.use(express.static('./public'))
     .delete('/api/customers/:id', customers.delete)
     .put('/api/customers/:id', customers.update)
     .post('/api/addproperty/customers/:id', jsonParser, customers.addproperty)
+    .post('/api/removeproperty/customers/:id', jsonParser, customers.removeproperty)
     .listen(3000);

@@ -36,6 +36,12 @@ angular.module('CustomerManagementApp')
                     .success(success)
                     .error(error);
             },
+            removeProperty: function (customerId, propertyToDelete, success, error) {
+                console.log("Customer Service addProperty");
+                $http.post(baseUrl + '/api/removeproperty/customers/'+ customerId, propertyToDelete)
+                    .success(success)
+                    .error(error);
+            },
             get: function (customerId, success, error) {
                 console.log("Customer Service");
                 $http.get(baseUrl + '/api/customers/'+ customerId)

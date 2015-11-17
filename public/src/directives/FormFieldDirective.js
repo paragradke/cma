@@ -41,17 +41,20 @@ angular.module('CustomerManagementApp').
                 console.log(scope.status);
 
                 scope.remove = function(field) {
-                    delete scope.record[field];
                     scope.blurUpdate();
+                    delete scope.record[field];
                 };
 
                 scope.blurUpdate = function() {
+                    var propertyToDelete = {};
                     if (scope.live !== 'false' && typeof scope.record !== undefined) {
+                        propertyToDelete[$filter('camelCase')(scope.field.name)] = [scope.field.value, scope.field.type, scope.field.status];
                         //TODO implement and call update API
-                        CustomerService.update(scope.record, function(updatedRecord) {
-                            scope.customer = updatedRecord;
+                        CustomerService.removeProperty(scope.record, function(deletedRecord) {
+                            delete scope.customer[deletedRecord.name];
                         }, function () {
                             //for error
+                            alert("Failed to delete field")
                         });
                     }
                 };
@@ -113,7 +116,7 @@ angular.module('CustomerManagementApp').
                                 console.log(updatedRecord);
                                 scope.record[(updatedRecord.name)] = [updatedRecord.value, updatedRecord.type, updatedRecord.status];
                             }, function () {
-                                console.log("Failed to save record")
+                                alert("Failed to save field")
                             });
                         }
                     }

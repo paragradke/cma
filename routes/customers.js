@@ -136,7 +136,21 @@ exports.addproperty = function(req, res) {
 };
 
 exports.removeproperty = function(req, res) {
-    console.log("remove property called" + req);
+    console.log("remove property called");
+    var input = JSON.parse(JSON.stringify(req.body));
+    var property = getPropertyFromRequest(input);
+    property['userId'] = req.params.id;
+    console.log(property);
+
+    req.getConnection(function (err, connection) {
+        var query = connection.query("DELETE from userProperties set ? ", property, function (err, rows) {
+            if (err) {
+                console.log("Error Selecting : %s ", err);
+            }
+
+            res.json(rows[0]);
+        });
+    });
 };
 
 exports.save = function(req, res) {
