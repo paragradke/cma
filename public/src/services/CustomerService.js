@@ -1,6 +1,3 @@
-/**
- * Created by parag on 08/01/15.
- */
 angular.module('CustomerManagementApp')
 .factory('CustomerService',  ['$http', function($http) {
         var baseUrl = "http://localhost:3000";
