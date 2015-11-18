@@ -1,6 +1,3 @@
-/**
- * Created by parag on 10/01/15.
- */
 angular.module('CustomerManagementApp').
     filter('labelCase', function() {
         return function(input) {
